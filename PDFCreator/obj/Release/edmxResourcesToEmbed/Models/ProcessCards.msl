@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ProcessCardsModelStoreContainer" CdmEntityContainer="ProcessCardsEntities">
+    <EntitySetMapping Name="Approvers">
+      <EntityTypeMapping TypeName="ProcessCardsModel.Approver">
+        <MappingFragment StoreEntitySet="Approvers">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="ValidAccess" ColumnName="ValidAccess" />
+          <ScalarProperty Name="WindowsName" ColumnName="WindowsName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DataPoints">
+      <EntityTypeMapping TypeName="ProcessCardsModel.DataPoint">
+        <MappingFragment StoreEntitySet="DataPoints">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+          <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
+          <ScalarProperty Name="Key" ColumnName="Key" />
+          <ScalarProperty Name="ProcessCardID" ColumnName="ProcessCardID" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProcessCards">
+      <EntityTypeMapping TypeName="ProcessCardsModel.ProcessCard">
+        <MappingFragment StoreEntitySet="ProcessCards">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="ProcessCardClass" ColumnName="ProcessCardClass" />
+          <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

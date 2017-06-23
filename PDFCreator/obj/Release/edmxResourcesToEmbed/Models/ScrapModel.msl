@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+  <Alias Key="Model" Value="ScrapModel" />
+  <Alias Key="Target" Value="ScrapModel.Store" />
+  <EntityContainerMapping CdmEntityContainer="ScrapModelContainer" StorageEntityContainer="ScrapModelStoreContainer">
+    <EntitySetMapping Name="C90dScrapTotals">
+      <EntityTypeMapping TypeName="ScrapModel.C90dScrapTotals">
+        <MappingFragment StoreEntitySet="90dScrapTotals">
+          <ScalarProperty Name="Produced" ColumnName="Produced" />
+          <ScalarProperty Name="Line" ColumnName="LINE" />
+          <ScalarProperty Name="Reason" ColumnName="REASON" />
+          <ScalarProperty Name="Scrapped" ColumnName="SCRAPPED" />
+          <ScalarProperty Name="Product" ColumnName="PRODUCT" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

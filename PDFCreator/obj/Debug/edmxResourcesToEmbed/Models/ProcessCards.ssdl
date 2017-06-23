@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ProcessCardsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Approvers">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Title" Type="nvarchar(max)" />
+    <Property Name="ValidAccess" Type="int" Nullable="false" />
+    <Property Name="WindowsName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DataPoints">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ApprovedDate" Type="datetime2" Precision="7" Nullable="false" />
+    <Property Name="ApproverID" Type="int" Nullable="false" />
+    <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="ProcessCardID" Type="int" />
+    <Property Name="Type" Type="nvarchar(max)" />
+    <Property Name="Value" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="ProcessCards">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ProcessCardClass" Type="int" Nullable="false" />
+    <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'ProcessCards.dbo.BlisProductsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <Association Name="FK_DataPoints_Approvers_ApproverID">
+    <End Role="Approvers" Type="Self.Approvers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="DataPoints" Type="Self.DataPoints" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Approvers">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DataPoints">
+        <PropertyRef Name="ApproverID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DataPoints_ProcessCards_ProcessCardID">
+    <End Role="ProcessCards" Type="Self.ProcessCards" Multiplicity="0..1" />
+    <End Role="DataPoints" Type="Self.DataPoints" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ProcessCards">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="DataPoints">
+        <PropertyRef Name="ProcessCardID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ProcessCardsModelStoreContainer">
+    <EntitySet Name="Approvers" EntityType="Self.Approvers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DataPoints" EntityType="Self.DataPoints" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ProcessCards" EntityType="Self.ProcessCards" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_DataPoints_Approvers_ApproverID" Association="Self.FK_DataPoints_Approvers_ApproverID">
+      <End Role="Approvers" EntitySet="Approvers" />
+      <End Role="DataPoints" EntitySet="DataPoints" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DataPoints_ProcessCards_ProcessCardID" Association="Self.FK_DataPoints_ProcessCards_ProcessCardID">
+      <End Role="ProcessCards" EntitySet="ProcessCards" />
+      <End Role="DataPoints" EntitySet="DataPoints" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

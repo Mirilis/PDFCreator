@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="ScrapModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="ScrapModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C90dScrapTotals" EntityType="ScrapModel.C90dScrapTotals" />
+  </EntityContainer>
+  <EntityType Name="C90dScrapTotals">
+    <Key>
+      <PropertyRef Name="ID" />
+      <PropertyRef Name="Reason" />
+      <PropertyRef Name="Line" />
+    </Key>
+    <Property Name="ID" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Product" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Scrapped" Type="Double" />
+    <Property Name="Reason" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Line" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="Produced" Type="Decimal" Precision="38" Scale="0" />
+  </EntityType>
+</Schema>

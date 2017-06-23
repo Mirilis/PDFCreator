@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ProcessCardsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Approvers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="ValidAccess" Type="int" Nullable="false" />
+          <Property Name="WindowsName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DataPoints">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ApprovedDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ApproverID" Type="int" Nullable="false" />
+          <Property Name="Key" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ProcessCardID" Type="int" />
+          <Property Name="Type" Type="nvarchar(max)" />
+          <Property Name="Value" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ProcessCards">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProcessCardClass" Type="int" Nullable="false" />
+          <Property Name="ProductName" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ProcessCards.dbo.BlisProductsView' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <Association Name="FK_DataPoints_Approvers_ApproverID">
+          <End Role="Approvers" Type="Self.Approvers" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DataPoints" Type="Self.DataPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Approvers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DataPoints">
+              <PropertyRef Name="ApproverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DataPoints_ProcessCards_ProcessCardID">
+          <End Role="ProcessCards" Type="Self.ProcessCards" Multiplicity="0..1" />
+          <End Role="DataPoints" Type="Self.DataPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProcessCards">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DataPoints">
+              <PropertyRef Name="ProcessCardID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProcessCardsModelStoreContainer">
+          <EntitySet Name="Approvers" EntityType="Self.Approvers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DataPoints" EntityType="Self.DataPoints" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProcessCards" EntityType="Self.ProcessCards" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_DataPoints_Approvers_ApproverID" Association="Self.FK_DataPoints_Approvers_ApproverID">
+            <End Role="Approvers" EntitySet="Approvers" />
+            <End Role="DataPoints" EntitySet="DataPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DataPoints_ProcessCards_ProcessCardID" Association="Self.FK_DataPoints_ProcessCards_ProcessCardID">
+            <End Role="ProcessCards" EntitySet="ProcessCards" />
+            <End Role="DataPoints" EntitySet="DataPoints" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ProcessCardsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Approver">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ValidAccess" Type="Int32" Nullable="false" />
+          <Property Name="WindowsName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DataPoints" Relationship="Self.FK_DataPoints_Approvers_ApproverID" FromRole="Approvers" ToRole="DataPoints" />
+        </EntityType>
+        <EntityType Name="DataPoint">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ApprovedDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ApproverID" Type="Int32" Nullable="false" />
+          <Property Name="Key" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProcessCardID" Type="Int32" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Approver" Relationship="Self.FK_DataPoints_Approvers_ApproverID" FromRole="DataPoints" ToRole="Approvers" />
+          <NavigationProperty Name="ProcessCard" Relationship="Self.FK_DataPoints_ProcessCards_ProcessCardID" FromRole="DataPoints" ToRole="ProcessCards" />
+        </EntityType>
+        <EntityType Name="ProcessCard">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProcessCardClass" Type="Int32" Nullable="false" />
+          <Property Name="ProductName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="DataPoints" Relationship="Self.FK_DataPoints_ProcessCards_ProcessCardID" FromRole="ProcessCards" ToRole="DataPoints" />
+        </EntityType>
+        <Association Name="FK_DataPoints_Approvers_ApproverID">
+          <End Role="Approvers" Type="Self.Approver" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="DataPoints" Type="Self.DataPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Approvers">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DataPoints">
+              <PropertyRef Name="ApproverID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DataPoints_ProcessCards_ProcessCardID">
+          <End Role="ProcessCards" Type="Self.ProcessCard" Multiplicity="0..1" />
+          <End Role="DataPoints" Type="Self.DataPoint" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProcessCards">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="DataPoints">
+              <PropertyRef Name="ProcessCardID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ProcessCardsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Approvers" EntityType="Self.Approver" />
+          <EntitySet Name="DataPoints" EntityType="Self.DataPoint" />
+          <EntitySet Name="ProcessCards" EntityType="Self.ProcessCard" />
+          <AssociationSet Name="FK_DataPoints_Approvers_ApproverID" Association="Self.FK_DataPoints_Approvers_ApproverID">
+            <End Role="Approvers" EntitySet="Approvers" />
+            <End Role="DataPoints" EntitySet="DataPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DataPoints_ProcessCards_ProcessCardID" Association="Self.FK_DataPoints_ProcessCards_ProcessCardID">
+            <End Role="ProcessCards" EntitySet="ProcessCards" />
+            <End Role="DataPoints" EntitySet="DataPoints" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ProcessCardsModelStoreContainer" CdmEntityContainer="ProcessCardsEntities">
+          <EntitySetMapping Name="Approvers">
+            <EntityTypeMapping TypeName="ProcessCardsModel.Approver">
+              <MappingFragment StoreEntitySet="Approvers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ValidAccess" ColumnName="ValidAccess" />
+                <ScalarProperty Name="WindowsName" ColumnName="WindowsName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DataPoints">
+            <EntityTypeMapping TypeName="ProcessCardsModel.DataPoint">
+              <MappingFragment StoreEntitySet="DataPoints">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ApprovedDate" ColumnName="ApprovedDate" />
+                <ScalarProperty Name="ApproverID" ColumnName="ApproverID" />
+                <ScalarProperty Name="Key" ColumnName="Key" />
+                <ScalarProperty Name="ProcessCardID" ColumnName="ProcessCardID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProcessCards">
+            <EntityTypeMapping TypeName="ProcessCardsModel.ProcessCard">
+              <MappingFragment StoreEntitySet="ProcessCards">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ProcessCardClass" ColumnName="ProcessCardClass" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
